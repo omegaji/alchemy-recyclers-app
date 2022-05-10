@@ -128,11 +128,13 @@
 
 
 	$('.owl-service-item').owlCarousel({
-		items:4,
+		items:6,
 		loop:true,
 		dots: true,
 		nav: false,
 		autoplay: true,
+		autoplayHoverPause:true,
+		autoplayTimeout:1800,
 		margin:15,
 		  responsive:{
 			  0:{
