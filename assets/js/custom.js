@@ -111,11 +111,22 @@
 
 	$(document).on("click", ".naccs .menu div", function() {
 		var numberIndex = $(this).index();
-	
+		
 		if (!$(this).is("active")) {
 			$(".naccs .menu div").removeClass("active");
 			$(".naccs ul li").removeClass("active");
-	
+			if (numberIndex==0){
+				$(".naccs .menu div").find("li:eq(" + 0+ ")").attr("visible","none")
+				$(".naccs .nacc div").find("li:eq(" + 0+ ")").attr("visible","block")
+				$("#first").attr("visible","block")
+
+			}
+			else{
+				$(".naccs .nacc div").find("li:eq(" + 0+ ")").attr("visible","none")
+				$("#first").attr("visible","none")
+
+				$(".naccs .menu div").find("li:eq(" + 0+ ")").attr("visible","block")
+			}
 			$(this).addClass("active");
 			$(".naccs ul").find("li:eq(" + numberIndex + ")").addClass("active");
 	
@@ -260,7 +271,7 @@
 	
 
 	const dropdownOpener = $('.main-nav ul.nav .has-sub > a');
-
+	
     // Open/Close Submenus
     if (dropdownOpener.length) {
         dropdownOpener.each(function () {
@@ -336,3 +347,10 @@
 
 
 })(window.jQuery);
+
+
+
+$( document ).ready(function() {
+	console.log("its ready")
+
+});
