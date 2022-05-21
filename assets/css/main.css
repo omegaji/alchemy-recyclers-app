@@ -1212,6 +1212,39 @@ section.contact-us .contact-info span {
   font-weight: 900;
 }
 
+.contactFlex{
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  background-color: #fff;
+  align-items: center;
+  height:100%;
+  border-radius: 10%;
+}
+
+.contactFlexItem{
+  display: flex;
+  flex-direction: row;
+
+  font-size:3.3rem;
+  margin:1rem;
+  align-items: center;
+}
+.contactFlexItem>div:first-child{
+  flex-grow:1;
+  padding-right:1rem ;
+}
+.contactFlexItem>div:nth-child(2){
+  flex-grow:1;
+  width: 200px;
+  
+}
+.contactFlexItem>div>p{
+font-weight: 900;
+font-size:0.8rem;
+line-height: 16px;
+}
+
 section.contact-us .section-heading {
   text-align: left;
   margin-bottom: 40px;
