@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import { getTags } from '../../../utils/blog';
+
+const tags = await getTags();
+---
+
+<BaseLayout title="Blog Topics" description="Browse Alchemy Recyclers articles by topic: e-waste, Vadodara, Gujarat, precious metals, gold recovery, regulations and more.">
+  <PageHero
+    eyebrow="Blog"
+    title="Browse by <em>topic</em>"
+    crumbs={[
+      { label: 'Blog', href: '/blog/' },
+      { label: 'Topics', href: '/blog/tags/' },
+    ]}
+  />
+  <section class="section">
+    <div class="container tags">
+      {
+        tags.map((t) => (
+          <a class="card tag" href={`/blog/tags/${t.slug}/`}>
+            <span class="name">{t.label}</span>
+            <span class="count">{t.count} article{t.count === 1 ? '' : 's'}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tags {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  }
+  .name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  .count {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+import { METALS } from '../data/site';
+---
+
+<ul class="metals">
+  {
+    METALS.map((m, i) => (
+      <li class={`tile ${m.tone} reveal`} style={`transition-delay:${i * 60}ms`}>
+        <span class="num">{m.number}</span>
+        <span class="sym">{m.symbol}</span>
+        <span class="name">{m.name}</span>
+        <span class="mass">{m.mass}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .metals {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(12px, 2vw, 22px);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 640px) {
+    .metals {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 1040px) {
+    .metals {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+  .tile {
+    --face: linear-gradient(145deg, #fdf3c4, #e7bd3e 40%, #b8860b 75%, #f0d175);
+    position: relative;
+    aspect-ratio: 1 / 1.08;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    background: var(--face);
+    color: #2a1f05;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 55%),
+      inset 0 -8px 16px rgb(0 0 0 / 12%),
+      0 18px 30px -16px rgb(0 0 0 / 55%);
+    overflow: hidden;
+    transition:
+      transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 0.7s ease;
+  }
+  .tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 35%, rgb(255 255 255 / 45%) 48%, transparent 60%);
+    transform: translateX(-120%);
+    transition: transform 0.8s ease;
+  }
+  .tile:hover {
+    transform: translateY(-6px) rotate(-1deg);
+  }
+  .tile:hover::after {
+    transform: translateX(120%);
+  }
+  .silver {
+    --face: linear-gradient(145deg, #ffffff, #cfd4d8 40%, #8e969c 78%, #e8ebee);
+    color: #1c2226;
+  }
+  .platinum {
+    --face: linear-gradient(145deg, #f4f5f1, #c9cbc3 40%, #9ea196 78%, #e3e5de);
+    color: #1d1f1a;
+  }
+  .palladium {
+    --face: linear-gradient(145deg, #eef0f3, #b8bec8 40%, #7c8594 78%, #d9dde3);
+    color: #161b22;
+  }
+  .rhodium {
+    --face: linear-gradient(145deg, #f7f7fb, #d4d6e2 40%, #a2a6bb 78%, #eceef5);
+    color: #1b1d28;
+  }
+  .copper {
+    --face: linear-gradient(145deg, #ffd9bf, #d98b56 40%, #a35425 78%, #f0b48c);
+    color: #2e1407;
+  }
+  .num {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .sym {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1;
+    margin-top: auto;
+  }
+  .name {
+    font-weight: 600;
+    margin-top: 6px;
+  }
+  .mass {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+</style>

@@ -1,0 +1,86 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { tagLabel, tagSlug, formatDate } from '../utils/blog';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  headingLevel?: 'h2' | 'h3';
+}
+const { post, headingLevel: H = 'h3' } = Astro.props;
+const { title, description, pubDate, tags, cover, coverAlt } = post.data;
+---
+
+<article class="post card reveal">
+  <a href={`/blog/${post.id}/`} class="cover" tabindex="-1" aria-hidden="true">
+    <Image src={cover} alt={coverAlt} widths={[400, 700]} sizes="(min-width: 900px) 380px, 100vw" />
+  </a>
+  <div class="body">
+    <div class="meta">
+      <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+    </div>
+    <H class="title"><a href={`/blog/${post.id}/`}>{title}</a></H>
+    <p>{description}</p>
+    <div class="tags">
+      {tags.slice(0, 3).map((t) => <a class="chip" href={`/blog/tags/${tagSlug(t)}/`}>{tagLabel(t)}</a>)}
+    </div>
+  </div>
+</article>
+
+<style>
+  .post {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .post:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .cover {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .post:hover .cover img {
+    transform: scale(1.05);
+  }
+  .body {
+    padding: 22px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  .title a {
+    text-decoration: none;
+  }
+  .title a:hover {
+    color: var(--green-700);
+  }
+  p {
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+  .tags {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+</style>

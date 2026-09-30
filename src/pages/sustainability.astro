@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SDGs from '../components/SDGs.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+import heroImg from '../assets/img/phones-recycling.webp';
+
+const points = [
+  { icon: 'recycle', title: 'Restorative by design', text: 'Metals are recovered and returned to use, replacing the “end-of-life” idea with restoration.' },
+  { icon: 'globe', title: 'Fewer imports', text: 'India is a net importer of gold. Recovering it locally helps conserve foreign exchange reserves.' },
+  { icon: 'leaf', title: 'Less mining', text: 'Precious and rare earth metals are finite. Every gram recovered is a gram that does not have to be mined.' },
+  { icon: 'users', title: 'Formalising the trade', text: 'We work to bring informal scrap supply chains into the formal, responsible recycling ecosystem.' },
+] as const;
+---
+
+<BaseLayout
+  title="Sustainability & Circular Economy"
+  description="How Alchemy Recyclers in Vadodara supports the circular economy and the UN Sustainable Development Goals by recovering precious metals from e-waste in Gujarat."
+>
+  <PageHero
+    eyebrow="Alchemy green pledge"
+    title="Champions of the <em>circular economy</em>."
+    lead="Precious metals touch our lives in many ways: jewellery, smartphones, medical devices, industrial equipment, fuel cell catalysts and robotics. Because they are finite, rare and strategically important, recycling them is critical."
+    crumbs={[{ label: 'Sustainability', href: '/sustainability/' }]}
+    image={heroImg}
+  />
+
+  <section class="section">
+    <div class="container">
+      <blockquote class="quote reveal">
+        <p>
+          A “Circular Economy” is an industrial system that is restorative or regenerative by intention and design. It
+          replaces the end-of-life concept with restoration, shifts towards the use of renewable energy, eliminates the
+          use of toxic chemicals, which impair reuse and return to the biosphere, and aims for the elimination of waste
+          through the superior design of materials, products, systems and business models.
+        </p>
+        <cite>World Economic Forum</cite>
+      </blockquote>
+
+      <div class="grid grid-4 points">
+        {
+          points.map((p) => (
+            <div class="card reveal">
+              <span class="p-icon">
+                <Icon name={p.icon} size={24} />
+              </span>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="eyebrow">UN Sustainable Development Goals</p>
+        <h2>The goals our work supports</h2>
+        <p class="lead">Our project adopts the circular economy concept in full, recovering precious and rare earth metals that are not renewable.</p>
+      </div>
+      <SDGs />
+    </div>
+  </section>
+
+  <CTA title="Recycle responsibly with us." />
+</BaseLayout>
+
+<style>
+  .quote {
+    margin: 0 auto clamp(48px, 7vw, 80px);
+    max-width: 900px;
+    text-align: center;
+  }
+  .quote p {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .quote p::before {
+    content: '“';
+    display: block;
+    font-size: 4rem;
+    line-height: 0.6;
+    margin-bottom: 18px;
+    background: var(--gold-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  cite {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--green-700);
+  }
+  .points p {
+    color: var(--muted);
+    margin: 0;
+  }
+  .p-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--green-50);
+    color: var(--green-700);
+    margin-bottom: 16px;
+  }
+</style>

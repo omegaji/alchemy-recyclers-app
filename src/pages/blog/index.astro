@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import PostCard from '../../components/PostCard.astro';
+import CTA from '../../components/CTA.astro';
+import { getPosts, getTags } from '../../utils/blog';
+import { SITE } from '../../data/site';
+
+const posts = await getPosts();
+const tags = await getTags();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Alchemy Recyclers Blog',
+  url: `${SITE.url}/blog/`,
+  publisher: { '@id': `${SITE.url}/#business` },
+  blogPost: posts.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    url: `${SITE.url}/blog/${p.id}/`,
+    datePublished: p.data.pubDate.toISOString(),
+  })),
+};
+---
+
+<BaseLayout
+  title="E-Waste Blog: Guides for Gujarat Businesses"
+  description="Guides on e-waste recycling in Vadodara and Gujarat, the E-Waste Management Rules 2022, gold recovery from e-waste, urban mining and the circular economy."
+  schema={[schema]}
+>
+  <PageHero
+    eyebrow="Blog"
+    title="Guides on <em>e-waste</em> & precious metals"
+    lead="Practical articles for businesses in Vadodara and Gujarat on e-waste rules, recycling and recovering value from scrap."
+    crumbs={[{ label: 'Blog', href: '/blog/' }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <nav class="tags" aria-label="Blog topics">
+        <span class="t-label">Topics:</span>
+        {tags.map((t) => <a class="chip" href={`/blog/tags/${t.slug}/`}>{t.label} <small>({t.count})</small></a>)}
+      </nav>
+      <div class="grid grid-3">
+        {posts.map((p) => <PostCard post={p} headingLevel="h2" />)}
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</BaseLayout>
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+  .t-label {
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  small {
+    opacity: 0.7;
+  }
+</style>

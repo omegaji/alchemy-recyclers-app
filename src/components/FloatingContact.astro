@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+import { SITE } from '../data/site';
+---
+
+<a class="float-wa" href={SITE.whatsappHref} target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+  <Icon name="whatsapp" size={28} />
+</a>
+
+<style>
+  .float-wa {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #1fa855;
+    color: #fff;
+    box-shadow: 0 12px 28px -8px rgb(31 168 85 / 60%);
+    transition: transform 0.2s;
+  }
+  .float-wa:hover {
+    transform: scale(1.08);
+  }
+</style>

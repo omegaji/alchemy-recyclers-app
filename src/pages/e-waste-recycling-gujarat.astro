@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import FAQ from '../components/FAQ.astro';
+import CTA from '../components/CTA.astro';
+import MetalTiles from '../components/MetalTiles.astro';
+import { SITE } from '../data/site';
+import heroImg from '../assets/img/tech-waste.webp';
+
+const clusters = [
+  {
+    city: 'Vadodara',
+    text: 'Engineering, chemical and IT companies. Our plant is here, at Manjusar, Savli.',
+    streams: ['PCBs & ICs', 'IT e-waste', 'Spent catalysts'],
+    href: '/e-waste-recycling-vadodara/',
+  },
+  {
+    city: 'Ahmedabad & Gandhinagar',
+    text: 'IT parks, offices, electronics traders and manufacturers produce large volumes of computer and telecom e-waste.',
+    streams: ['Computers & servers', 'Telecom boards', 'Memory'],
+  },
+  {
+    city: 'Surat',
+    text: 'A major diamond and jewellery hub, alongside textile units with electronic controls.',
+    streams: ['Jewellery waste', 'Sweeps & polishing dust', 'E-scrap'],
+  },
+  {
+    city: 'Rajkot',
+    text: 'Known for jewellery making and engineering, both sources of precious-metal-bearing waste.',
+    streams: ['Jewellery waste', 'Plating waste', 'Rejected parts'],
+  },
+  {
+    city: 'Bharuch, Ankleshwar & Dahej',
+    text: 'One of India’s largest chemical and pharma belts, where catalysts often contain platinum group metals.',
+    streams: ['Spent catalysts', 'Pt, Pd, Rh', 'Plant e-waste'],
+  },
+  {
+    city: 'Anand, Halol & central Gujarat',
+    text: 'Automotive, dairy-tech and engineering units with electronic controls and rejected assemblies.',
+    streams: ['Control panels', 'PCB rejects', 'E-scrap'],
+  },
+];
+
+const faqs = [
+  {
+    q: 'Do you recycle e-waste from all over Gujarat?',
+    a: 'We work with businesses from across Gujarat. Material is processed at our plant in Vadodara district. Call or WhatsApp us to plan how your lot gets to us.',
+  },
+  {
+    q: 'Why is e-waste recycling important in Gujarat?',
+    a: 'Gujarat is one of India’s most industrialised states, so it produces a large share of the country’s industrial and electronic waste. Proper recycling keeps hazardous material out of landfills and recovers valuable metals.',
+  },
+  {
+    q: 'Which rules apply to e-waste in Gujarat?',
+    a: 'E-waste in India, including Gujarat, is governed by the E-Waste (Management) Rules, 2022. Businesses should hand e-waste only to proper recyclers and keep records. Read our blog guide for details.',
+  },
+];
+---
+
+<BaseLayout
+  title="E-Waste Recycling in Gujarat"
+  description="E-waste recycling and precious metal recovery for businesses across Gujarat: Vadodara, Ahmedabad, Surat, Rajkot, Bharuch, Ankleshwar and more. Alchemy Recyclers, Vadodara."
+  keywords={['e-waste recycling Gujarat', 'e-waste recycler Ahmedabad', 'e-waste Surat', 'e-waste Bharuch', 'e-waste Ankleshwar', 'jewellery waste Surat', 'catalyst recovery Dahej']}
+>
+  <PageHero
+    eyebrow="Across Gujarat"
+    title="E-waste recycling for <em>Gujarat’s</em> industries"
+    lead="Gujarat’s factories, chemical plants, jewellers and IT offices sit on a hidden urban mine. We help them recover its value, responsibly, from our plant in Vadodara."
+    crumbs={[{ label: 'E-waste recycling Gujarat', href: '/e-waste-recycling-gujarat/' }]}
+    image={heroImg}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Industrial clusters</p>
+        <h2>Different regions, different precious waste</h2>
+        <p class="lead">
+          Each part of Gujarat produces its own kind of precious-metal-bearing waste. Here is where we see it and what
+          we recover.
+        </p>
+      </div>
+      <div class="grid grid-3">
+        {
+          clusters.map((c) => {
+            const Tag = c.href ? 'a' : 'div';
+            return (
+              <Tag class="card cluster reveal" href={c.href}>
+                <h3>
+                  <Icon name="pin" size={20} /> {c.city}
+                </h3>
+                <p>{c.text}</p>
+                <div class="chips">
+                  {c.streams.map((s) => (
+                    <span class="chip">{s}</span>
+                  ))}
+                </div>
+              </Tag>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-dark">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="eyebrow">Recovered for Gujarat</p>
+        <h2>The metals inside your waste</h2>
+      </div>
+      <MetalTiles />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split faq-split">
+      <div class="prose reveal">
+        <h2>Why work with a Gujarat-based recycler?</h2>
+        <ul>
+          <li><strong>Shorter distances</strong> from your plant to ours, compared with recyclers in other states.</li>
+          <li><strong>Local understanding</strong> of Gujarat’s industrial waste streams, from Surat jewellery sweeps to Dahej catalysts.</li>
+          <li><strong>Direct contact</strong> with the directors, on <a href={SITE.phoneHref}>{SITE.phone}</a>.</li>
+        </ul>
+        <p>Read more: <a href="/blog/e-waste-management-rules-2022-gujarat/">E-Waste Management Rules 2022: a guide for Gujarat businesses</a>.</p>
+      </div>
+      <FAQ items={faqs} />
+    </div>
+  </section>
+
+  <CTA />
+</BaseLayout>
+
+<style>
+  .cluster h3 {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .cluster h3 :global(svg) {
+    color: var(--gold-600);
+  }
+  .cluster p {
+    color: var(--muted);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .faq-split {
+    align-items: start;
+  }
+  .faq-split .prose h2 {
+    margin-top: 0;
+  }
+</style>

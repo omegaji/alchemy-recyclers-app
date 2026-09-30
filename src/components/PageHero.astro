@@ -1,0 +1,134 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { SITE } from '../data/site';
+
+interface Crumb {
+  label: string;
+  href: string;
+}
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  crumbs: Crumb[];
+  image?: ImageMetadata;
+  imageAlt?: string;
+}
+
+const { eyebrow, title, lead, crumbs, image, imageAlt = '' } = Astro.props;
+const all = [{ label: 'Home', href: '/' }, ...crumbs];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    item: `${SITE.url}${c.href}`,
+  })),
+};
+---
+
+<section class="page-hero">
+  {image && <Image src={image} alt={imageAlt} class="bg" widths={[800, 1400]} sizes="100vw" loading="eager" fetchpriority="high" />}
+  <div class="glow" aria-hidden="true"></div>
+  <div class="container inner">
+    <nav aria-label="Breadcrumb">
+      <ol class="crumbs">
+        {
+          all.map((c, i) =>
+            i < all.length - 1 ? (
+              <li>
+                <a href={c.href}>{c.label}</a>
+              </li>
+            ) : (
+              <li aria-current="page">{c.label}</li>
+            ),
+          )
+        }
+      </ol>
+    </nav>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 set:html={title} />
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+<style>
+  .page-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--green-950);
+    color: #d7e3db;
+    padding: clamp(56px, 9vw, 110px) 0 clamp(56px, 8vw, 96px);
+  }
+  .bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 0.28;
+  }
+  .glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 80% at 85% 10%, rgb(212 160 23 / 22%), transparent 60%),
+      radial-gradient(50% 70% at 0% 100%, rgb(31 157 76 / 22%), transparent 60%),
+      linear-gradient(180deg, rgb(6 24 15 / 55%), rgb(6 24 15 / 92%));
+  }
+  .inner {
+    max-width: var(--container);
+  }
+  h1 {
+    color: var(--white);
+    max-width: 18ch;
+    font-size: clamp(2.3rem, 5.5vw, 4rem);
+  }
+  h1 :global(em) {
+    background: var(--gold-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lead {
+    color: #b9c9be;
+    max-width: 62ch;
+    margin-bottom: 0;
+  }
+  .eyebrow {
+    color: var(--gold-400);
+  }
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px;
+    font-size: 0.86rem;
+    color: #8fa598;
+  }
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 6px;
+    opacity: 0.5;
+  }
+  .crumbs a {
+    text-decoration: none;
+  }
+  .crumbs a:hover {
+    color: var(--gold-400);
+  }
+  .crumbs [aria-current] {
+    color: #d7e3db;
+  }
+</style>
