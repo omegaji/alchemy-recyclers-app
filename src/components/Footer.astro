@@ -1,0 +1,150 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { SITE, SERVICES } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="brand on-dark">
+        <Logo light />
+        <p>
+          E-waste recycling and precious metal recovery from our plant in Manjusar, Savli, Vadodara. Recovering gold,
+          silver, platinum, palladium, rhodium and copper for a circular economy.
+        </p>
+        <a class="btn btn-ghost" href={SITE.brochure} download><Icon name="download" /> Download brochure</a>
+      </div>
+
+      <div>
+        <h2 class="f-title">Services</h2>
+        <ul>
+          {SERVICES.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="f-title">Company</h2>
+        <ul>
+          <li><a href="/about/">About us</a></li>
+          <li><a href="/materials/">Materials we accept</a></li>
+          <li><a href="/process/">Our process</a></li>
+          <li><a href="/sustainability/">Sustainability</a></li>
+          <li><a href="/e-waste-recycling-vadodara/">E-waste recycling Vadodara</a></li>
+          <li><a href="/e-waste-recycling-gujarat/">E-waste recycling Gujarat</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="f-title">Contact</h2>
+        <address>
+          <a href={SITE.mapLink} target="_blank" rel="noopener" class="row">
+            <Icon name="pin" />
+            <span>{SITE.address.street},<br />{SITE.address.locality} - {SITE.address.postalCode}, {SITE.address.region}, India</span>
+          </a>
+          <a href={SITE.phoneHref} class="row"><Icon name="phone" /> {SITE.phone}</a>
+          <a href={`mailto:${SITE.email}`} class="row"><Icon name="mail" /> {SITE.email}</a>
+          <a href={SITE.whatsappHref} target="_blank" rel="noopener" class="row"><Icon name="whatsapp" /> WhatsApp us</a>
+        </address>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {year} {SITE.legalName}. All rights reserved.</p>
+      <p>E-waste recycling in Vadodara, Gujarat, India</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    background: var(--green-950);
+    color: #a9bbaf;
+    padding: clamp(56px, 8vw, 96px) 0 28px;
+    overflow: hidden;
+  }
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: var(--gold-grad);
+    opacity: 0.6;
+  }
+  .footer-grid {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1040px) {
+    .footer-grid {
+      grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+    }
+  }
+  .brand p {
+    margin: 18px 0 22px;
+    max-width: 40ch;
+    font-size: 0.97rem;
+  }
+  .f-title {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-400);
+    margin-bottom: 18px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  a {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  a:hover {
+    color: var(--white);
+  }
+  address {
+    font-style: normal;
+    display: grid;
+    gap: 14px;
+  }
+  .row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 0.97rem;
+  }
+  .row :global(svg) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--gold-400);
+  }
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid rgb(255 255 255 / 10%);
+    font-size: 0.86rem;
+  }
+  .footer-bottom p {
+    margin: 0;
+  }
+</style>

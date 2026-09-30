@@ -1,0 +1,208 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import { SERVICES, SITE, type Service } from '../../data/site';
+
+export function getStaticPaths() {
+  return SERVICES.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props as { service: Service };
+const others = SERVICES.filter((s) => s.slug !== service.slug);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.name,
+  serviceType: service.name,
+  description: service.metaDescription,
+  url: `${SITE.url}/services/${service.slug}/`,
+  provider: { '@id': `${SITE.url}/#business` },
+  areaServed: [
+    { '@type': 'City', name: 'Vadodara' },
+    { '@type': 'State', name: 'Gujarat' },
+  ],
+};
+---
+
+<BaseLayout title={service.metaTitle} description={service.metaDescription} schema={[schema]} image={service.image.src}>
+  <PageHero
+    eyebrow="Service"
+    title={service.name}
+    lead={service.short}
+    crumbs={[
+      { label: 'Services', href: '/services/' },
+      { label: service.name, href: `/services/${service.slug}/` },
+    ]}
+    image={service.image}
+    imageAlt={service.imageAlt}
+  >
+    <div class="btn-row on-dark hero-btns">
+      <a class="btn btn-gold" href="/contact/">Get a quote <Icon name="arrow" /></a>
+      <a class="btn btn-ghost" href={SITE.phoneHref}><Icon name="phone" /> {SITE.phone}</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container layout">
+      <article class="main">
+        <div class="prose reveal">
+          <h2>Overview</h2>
+          {service.intro.map((p) => <p>{p}</p>)}
+        </div>
+
+        <div class="img-frame reveal wide-img">
+          <Image src={service.image} alt={service.imageAlt} widths={[600, 1000]} sizes="(min-width: 1000px) 720px, 100vw" />
+        </div>
+
+        <div class="reveal">
+          <h2 class="h2">What we accept</h2>
+          <ul class="tick-list two-col">
+            {service.accept.map((a) => <li>{a}</li>)}
+          </ul>
+        </div>
+
+        <div class="reveal">
+          <h2 class="h2">Why Alchemy Recyclers</h2>
+          <div class="why">
+            {
+              service.why.map((w) => (
+                <div class="card">
+                  <h3>{w.title}</h3>
+                  <p>{w.text}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </article>
+
+      <aside class="side">
+        <div class="card sticky">
+          <h2 class="side-title">Metals recovered</h2>
+          <div class="chips">
+            {service.metals.map((m) => <span class="chip">{m}</span>)}
+          </div>
+          <hr />
+          <h2 class="side-title">Talk to us</h2>
+          <p class="small">Send us the type of material, rough quantity and a few photos.</p>
+          <div class="side-btns">
+            <a class="btn btn-gold" href={SITE.phoneHref}><Icon name="phone" /> Call now</a>
+            <a class="btn btn-ghost" href={SITE.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" /> WhatsApp</a>
+            <a class="btn btn-ghost" href={`mailto:${SITE.email}?subject=${encodeURIComponent(`Enquiry: ${service.name}`)}`}><Icon name="mail" /> Email</a>
+          </div>
+          <hr />
+          <p class="small addr"><Icon name="pin" size={16} /> {SITE.address.street}, {SITE.address.locality} - {SITE.address.postalCode}, Gujarat</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">More services</p>
+        <h2>Other ways we can help</h2>
+      </div>
+      <div class="grid grid-3">
+        {
+          others.slice(0, 3).map((s) => (
+            <a class="card reveal" href={`/services/${s.slug}/`}>
+              <h3>{s.name}</h3>
+              <p class="muted">{s.short}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</BaseLayout>
+
+<style>
+  .hero-btns {
+    margin-top: 28px;
+  }
+  .layout {
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+  }
+  @media (min-width: 1000px) {
+    .layout {
+      grid-template-columns: 1fr 340px;
+    }
+  }
+  .main {
+    display: grid;
+    gap: clamp(36px, 5vw, 56px);
+    min-width: 0;
+  }
+  .main .prose h2:first-child {
+    margin-top: 0;
+  }
+  .wide-img {
+    aspect-ratio: 16 / 9;
+  }
+  .h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 24px;
+  }
+  .two-col {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    column-gap: 28px;
+  }
+  .why {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  }
+  .why p,
+  .muted {
+    color: var(--muted);
+    margin: 0;
+  }
+  .sticky {
+    position: sticky;
+    top: 100px;
+  }
+  .side-title {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-700);
+    margin-bottom: 14px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 22px 0;
+  }
+  .small {
+    font-size: 0.93rem;
+    color: var(--muted);
+  }
+  .side-btns {
+    display: grid;
+    gap: 10px;
+  }
+  .addr {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+  }
+  .addr :global(svg) {
+    flex: none;
+    margin-top: 4px;
+    color: var(--gold-600);
+  }
+</style>

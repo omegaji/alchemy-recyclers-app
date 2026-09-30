@@ -1,0 +1,179 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingContact from '../components/FloatingContact.astro';
+import { SITE, METALS } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute or root-relative image for social previews. */
+  image?: string;
+  type?: 'website' | 'article';
+  /** Extra JSON-LD objects for this page. */
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+  keywords?: string[];
+  publishedTime?: Date;
+  modifiedTime?: Date;
+}
+
+const {
+  title,
+  description,
+  image = '/og-image.jpg',
+  type = 'website',
+  schema = [],
+  noindex = false,
+  keywords = [],
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
+// Keep titles short enough for search results (~65 chars); drop the brand suffix on long titles.
+const fullTitle =
+  title.includes(SITE.name) || title.length + SITE.name.length + 3 > 66 ? title : `${title} | ${SITE.name}`;
+
+const defaultKeywords = [
+  'e-waste recycling Vadodara',
+  'e-waste recycling Gujarat',
+  'e-waste recycler Vadodara',
+  'precious metal recovery Gujarat',
+  'gold recovery from e-waste',
+  'Alchemy Recyclers',
+];
+
+// Business details shared by every page, so search engines always see the same NAP (name, address, phone).
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'RecyclingCenter',
+  '@id': `${SITE.url}/#business`,
+  name: SITE.name,
+  legalName: SITE.legalName,
+  url: `${SITE.url}/`,
+  logo: `${SITE.url}/logo.png`,
+  image: `${SITE.url}/og-image.jpg`,
+  description: SITE.description,
+  telephone: '+917878974409',
+  email: SITE.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.locality,
+    addressRegion: SITE.address.region,
+    postalCode: SITE.address.postalCode,
+    addressCountry: SITE.address.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: SITE.geo.lat, longitude: SITE.geo.lng },
+  hasMap: SITE.mapLink,
+  areaServed: SITE.areaServed.map((name) => ({ '@type': name === 'Gujarat' ? 'State' : 'City', name })),
+  knowsAbout: [
+    'E-waste recycling',
+    'Electronic waste management',
+    'Precious metal recovery',
+    'Urban mining',
+    'Thermal reduction',
+    'Circular economy',
+    ...METALS.map((m) => `${m.name} recovery`),
+  ],
+  founder: [
+    { '@type': 'Person', name: 'Alam Shah', jobTitle: 'Director' },
+    { '@type': 'Person', name: 'Sagar Upadhyay', jobTitle: 'Director' },
+  ],
+};
+
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
+  url: `${SITE.url}/`,
+  name: SITE.name,
+  publisher: { '@id': `${SITE.url}/#business` },
+  inLanguage: 'en-IN',
+};
+
+const allSchema = [business, website, ...schema];
+---
+
+<!doctype html>
+<html lang="en-IN" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {keywords.length > 0 && <meta name="keywords" content={[...keywords, ...defaultKeywords].join(', ')} />}
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta name="theme-color" content="#06180f" />
+    <meta name="author" content={SITE.legalName} />
+
+    <!-- Local SEO -->
+    <meta name="geo.region" content="IN-GJ" />
+    <meta name="geo.placename" content="Vadodara, Gujarat" />
+    <meta name="geo.position" content={`${SITE.geo.lat};${SITE.geo.lng}`} />
+    <meta name="ICBM" content={`${SITE.geo.lat}, ${SITE.geo.lng}`} />
+
+    <!-- Social previews -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Alchemy Recyclers Blog" href="/rss.xml" />
+
+    {allSchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <FloatingContact />
+
+    <script>
+      // Fade sections in as they scroll into view.
+      const els = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-visible');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

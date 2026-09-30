@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import { SERVICES, SITE } from '../../data/site';
+import heroImg from '../../assets/img/circuit-board.jpg';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Alchemy Recyclers services',
+  itemListElement: SERVICES.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `${SITE.url}/services/${s.slug}/`,
+    name: s.name,
+  })),
+};
+---
+
+<BaseLayout
+  title="E-Waste & Precious Metal Recovery Services"
+  description="E-waste recycling, precious metal recovery, jewellery waste, spent catalyst and plating waste recovery services by Alchemy Recyclers in Vadodara, Gujarat."
+  schema={[schema]}
+>
+  <PageHero
+    eyebrow="Our services"
+    title="Recycling services for every <em>precious</em> waste stream."
+    lead="From IT offices clearing old computers to chemical plants with spent catalysts, we recover the metal value in your waste at our plant in Vadodara."
+    crumbs={[{ label: 'Services', href: '/services/' }]}
+    image={heroImg}
+  />
+
+  <section class="section">
+    <div class="container list">
+      {
+        SERVICES.map((s, i) => (
+          <a href={`/services/${s.slug}/`} class:list={['row reveal', { flip: i % 2 === 1 }]}>
+            <div class="img">
+              <Image src={s.image} alt={s.imageAlt} widths={[500, 900]} sizes="(min-width: 900px) 45vw, 100vw" />
+            </div>
+            <div class="copy">
+              <span class="n">0{i + 1}</span>
+              <h2>{s.name}</h2>
+              <p>{s.short}</p>
+              <div class="metals">
+                {s.metals.map((m) => (
+                  <span class="chip">{m}</span>
+                ))}
+              </div>
+              <span class="more">
+                View service <Icon name="arrow" size={18} />
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <CTA />
+</BaseLayout>
+
+<style>
+  .list {
+    display: grid;
+    gap: clamp(28px, 5vw, 56px);
+  }
+  .row {
+    display: grid;
+    gap: clamp(20px, 4vw, 56px);
+    align-items: center;
+    text-decoration: none;
+  }
+  @media (min-width: 900px) {
+    .row {
+      grid-template-columns: 1fr 1fr;
+    }
+    .row.flip .img {
+      order: 2;
+    }
+  }
+  .img {
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+  }
+  .row:hover .img img {
+    transform: scale(1.05);
+  }
+  .n {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--gold-600);
+    font-weight: 700;
+  }
+  h2 {
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    margin-top: 6px;
+  }
+  .row:hover h2 {
+    color: var(--green-700);
+  }
+  p {
+    color: var(--muted);
+    font-size: 1.08rem;
+  }
+  .metals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 22px;
+  }
+  .more {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    font-weight: 650;
+    color: var(--green-700);
+  }
+</style>

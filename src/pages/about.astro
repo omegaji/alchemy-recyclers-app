@@ -1,0 +1,265 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+import { SITE } from '../data/site';
+import hero from '../assets/img/hero-gold-cpus.png';
+import goldParts from '../assets/img/gold-plated-components.png';
+import alam from '../assets/img/alam-shah.png';
+import sagar from '../assets/img/sagar-upadhyay.png';
+
+const directors = [
+  {
+    name: 'Alam Shah',
+    role: 'Director',
+    photo: alam,
+    bio: [
+      'Mr Alam Shah has more than two decades of experience in metals and the scrap trade, and has been a Director of the company since its incorporation. He has strong links with formal and informal actors of the metal trade across India.',
+      'He strongly believes in ethical business practices and has vast experience in large scrap disposal, dismantling and demolition projects under liquidation or relocation, with complete client satisfaction. His consultative, collaborative way of working speeds up disposal to match each client’s needs, and he has completed many projects within cost and time.',
+    ],
+  },
+  {
+    name: 'Sagar Upadhyay',
+    role: 'Director',
+    photo: sagar,
+    bio: [
+      'Mr Sagar Upadhyay holds a Bachelor of Engineering in Electronics and Telecommunication and has years of experience in e-waste management and recycling. He is passionate about bringing the informal scrap supply chain into the formal recycling ecosystem.',
+      'He has hands-on experience in e-waste procurement, marketing, operations, metal recycling, compliance and reverse logistics. His engineering background and recycling experience help him drive digital change for informal enterprises and build a strong network across the recycling trade.',
+    ],
+  },
+];
+
+const values = [
+  { icon: 'recycle', title: 'Reclamation', text: 'Identifying the key raw material in every waste stream so nothing valuable is missed.' },
+  { icon: 'scale', title: 'Recovery', text: 'Sorting and segregating items into individual lots and treating each batch on its own.' },
+  { icon: 'flame', title: 'Refining', text: 'Thermal reduction and solvent extraction to produce a clean, well-characterised metal commodity.' },
+] as const;
+
+const personSchema = directors.map((d) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: d.name,
+  jobTitle: d.role,
+  worksFor: { '@id': `${SITE.url}/#business` },
+}));
+---
+
+<BaseLayout
+  title="About Us – E-Waste Recyclers in Vadodara"
+  description="Meet Alchemy Recyclers Pvt. Ltd., a Vadodara, Gujarat company recovering precious metals from e-waste, jewellery, catalyst and plating waste. Led by engineers with 20+ years in the scrap trade."
+  schema={[
+    { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About Alchemy Recyclers', about: { '@id': `${SITE.url}/#business` } },
+    ...personSchema,
+  ]}
+>
+  <PageHero
+    eyebrow="About us"
+    title="Turning Gujarat’s <em>urban mine</em> into value."
+    lead="Alchemy Recyclers Private Limited recovers and recycles precious metals from electronic waste and from other precious-metal-bearing waste: jewellery industry waste, spent catalysts and plating waste."
+    crumbs={[{ label: 'About', href: '/about/' }]}
+    image={hero}
+  />
+
+  <section class="section">
+    <div class="container split">
+      <div class="reveal">
+        <p class="eyebrow">Urban mine & envisioned project</p>
+        <h2>E-waste is 40 to 50 times richer than ore.</h2>
+        <p>
+          One tonne of gold ore yields about 5 grams of gold. One tonne of phone circuit boards yields about 150 grams,
+          30 times as much. Urban mining is the chance to reclaim precious metals and rare earth elements used in
+          high-end mobile and communication devices.
+        </p>
+        <p>
+          This is why scrap electronics are called the <strong>“urban mine”</strong>: the concentration of metal is many
+          times higher than in ore from the earth’s crust.
+        </p>
+      </div>
+      <div class="img-frame reveal tall">
+        <Image src={goldParts} alt="Gold-plated components on an old telecom circuit board" widths={[500, 800]} sizes="(min-width: 900px) 50vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-dark">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="eyebrow">Reinventing the RRR standard</p>
+        <h2>Reclamation, Recovery & Refining</h2>
+        <p class="lead">
+          Gold, silver, palladium, platinum and rhodium are the five major precious metals found in electronic and
+          jewellers’ waste. Recovering them is the heart of our project.
+        </p>
+      </div>
+      <div class="grid grid-3">
+        {
+          values.map((v, i) => (
+            <div class="value reveal" style={`transition-delay:${i * 80}ms`}>
+              <span class="v-icon">
+                <Icon name={v.icon} size={28} />
+              </span>
+              <h3>{v.title}</h3>
+              <p>{v.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split reverse">
+      <div class="reveal">
+        <p class="eyebrow">Green technology, process & people</p>
+        <h2>Engineers with two decades in the scrap trade.</h2>
+        <p>
+          Alchemy was formed by techno-commercial entrepreneurs with more than 20 years of experience in the electronic
+          and electrical scrap industry. We are electrical engineers by profession.
+        </p>
+        <p>
+          We have adapted our technology to Indian raw materials, with equipment sourced from overseas. We use
+          <strong>solvent extraction</strong> for surface-plated items, and <strong>thermal reduction plus solvent
+          extraction</strong> for embedded parts like processors and integrated chips.
+        </p>
+        <p>
+          Our thermal reduction and pollution control systems are engineered to run efficiently even at low volumes,
+          meeting the current and emerging needs of the waste processing industry.
+        </p>
+        <a class="btn btn-ghost" href="/process/">How our process works <Icon name="arrow" /></a>
+      </div>
+      <dl class="facts reveal">
+        <div><dt>20+</dt><dd>Years of combined experience in electronic & electrical scrap</dd></div>
+        <div><dt>6</dt><dd>Metals recovered: Au, Ag, Pt, Pd, Rh, Cu</dd></div>
+        <div><dt>1100 °C</dt><dd>Afterburner temperature to fully combust exhaust</dd></div>
+        <div><dt>7</dt><dd>Types of recyclable materials processed</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="eyebrow">Leadership</p>
+        <h2>Champions of the circular economy</h2>
+      </div>
+      <div class="directors">
+        {
+          directors.map((d) => (
+            <article class="director card reveal">
+              <div class="photo">
+                <Image src={d.photo} alt={`${d.name}, ${d.role} of Alchemy Recyclers`} width={292} />
+              </div>
+              <div>
+                <h3>{d.name}</h3>
+                <p class="role">{d.role}</p>
+                {d.bio.map((p) => (
+                  <p>{p}</p>
+                ))}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Let’s recover the value in your waste." />
+</BaseLayout>
+
+<style>
+  .tall {
+    aspect-ratio: 4 / 3;
+  }
+  .value {
+    padding: 32px 28px;
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 4%);
+    border: 1px solid rgb(255 255 255 / 10%);
+  }
+  .value p {
+    color: #b9c9be;
+    margin: 0;
+  }
+  .v-icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gold-grad);
+    color: var(--green-950);
+    margin-bottom: 20px;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 0;
+  }
+  .facts div {
+    padding: 26px 22px;
+    border-radius: var(--radius);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+  .facts dt {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 10px;
+    background: var(--gold-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .facts dd {
+    margin: 0;
+    font-size: 0.93rem;
+    color: var(--muted);
+  }
+  .directors {
+    display: grid;
+    gap: 24px;
+  }
+  @media (min-width: 1000px) {
+    .directors {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .director {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 560px) {
+    .director {
+      grid-template-columns: 150px 1fr;
+    }
+  }
+  .photo {
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    max-width: 180px;
+  }
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .role {
+    color: var(--gold-600);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .director p:not(.role) {
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+</style>

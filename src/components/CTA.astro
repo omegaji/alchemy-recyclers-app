@@ -1,0 +1,69 @@
+---
+import Icon from './Icon.astro';
+import { SITE } from '../data/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Have e-waste or precious-metal scrap?',
+  text = 'Tell us what you have and roughly how much. We will get back to you with the next steps and a quote.',
+} = Astro.props;
+---
+
+<section class="section-tight">
+  <div class="container">
+    <div class="cta reveal">
+      <div class="shine" aria-hidden="true"></div>
+      <div class="copy">
+        <h2>{title}</h2>
+        <p>{text}</p>
+      </div>
+      <div class="btn-row on-dark">
+        <a class="btn btn-gold" href={SITE.phoneHref}><Icon name="phone" /> Call {SITE.phone}</a>
+        <a class="btn btn-ghost" href={SITE.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" /> WhatsApp</a>
+        <a class="btn btn-ghost" href="/contact/">Send enquiry <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: calc(var(--radius) * 1.4);
+    padding: clamp(32px, 5vw, 64px);
+    background:
+      radial-gradient(70% 120% at 100% 0%, rgb(212 160 23 / 35%), transparent 60%),
+      linear-gradient(135deg, var(--green-800), var(--green-950));
+    color: #c9d7ce;
+    display: grid;
+    gap: 28px;
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .cta {
+      grid-template-columns: 1.3fr auto;
+    }
+  }
+  h2 {
+    color: var(--white);
+    font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  }
+  p {
+    margin: 0;
+    max-width: 52ch;
+  }
+  .shine {
+    position: absolute;
+    inset: -40% auto auto -10%;
+    width: 60%;
+    height: 180%;
+    z-index: -1;
+    background: linear-gradient(100deg, transparent 40%, rgb(255 255 255 / 7%) 50%, transparent 60%);
+    transform: rotate(8deg);
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import PostCard from '../../../components/PostCard.astro';
+import CTA from '../../../components/CTA.astro';
+import { getPosts, getTags, tagSlug } from '../../../utils/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = await getTags();
+  return tags.map((t) => ({
+    params: { tag: t.slug },
+    props: { label: t.label, posts: posts.filter((p) => p.data.tags.some((x) => tagSlug(x) === t.slug)) },
+  }));
+}
+
+const { tag } = Astro.params;
+const { label, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`${label} Articles`}
+  description={`Articles about ${label.toLowerCase()} from Alchemy Recyclers, an e-waste recycling and precious metal recovery company in Vadodara, Gujarat.`}
+>
+  <PageHero
+    eyebrow="Topic"
+    title={`<em>${label}</em>`}
+    lead={`${posts.length} article${posts.length === 1 ? '' : 's'} on ${label.toLowerCase()}.`}
+    crumbs={[
+      { label: 'Blog', href: '/blog/' },
+      { label: 'Topics', href: '/blog/tags/' },
+      { label, href: `/blog/tags/${tag}/` },
+    ]}
+  />
+  <section class="section">
+    <div class="container grid grid-3">
+      {posts.map((p) => <PostCard post={p} headingLevel="h2" />)}
+    </div>
+  </section>
+  <CTA />
+</BaseLayout>

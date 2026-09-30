@@ -1,0 +1,225 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import FAQ from '../components/FAQ.astro';
+import CTA from '../components/CTA.astro';
+import { SITE, MATERIALS } from '../data/site';
+import heroImg from '../assets/img/e-scrap.webp';
+import phones from '../assets/img/phones-recycling.webp';
+
+const areas = [
+  'Manjusar GIDC',
+  'Savli GIDC',
+  'Makarpura GIDC',
+  'Por GIDC',
+  'Nandesari GIDC',
+  'Waghodia GIDC',
+  'Padra',
+  'Halol',
+  'Alembic Road & Gorwa',
+  'Akota, Alkapuri & Sayajigunj offices',
+];
+
+const who = [
+  { icon: 'factory', title: 'Factories & GIDC units', text: 'Rejected PCBs, electronic assemblies, plating waste and production debris.' },
+  { icon: 'chip', title: 'IT offices & data centres', text: 'Old computers, servers, networking gear, circuit boards and memory.' },
+  { icon: 'flame', title: 'Chemical & pharma plants', text: 'Spent catalysts containing platinum, palladium and rhodium.' },
+  { icon: 'users', title: 'Hospitals, labs & institutions', text: 'Decontaminated electronic medical devices, lab and campus e-waste.' },
+] as const;
+
+const faqs = [
+  {
+    q: 'Where can I recycle e-waste in Vadodara?',
+    a: `Alchemy Recyclers has its plant at ${SITE.address.street}, Vadodara - ${SITE.address.postalCode}. Call ${SITE.phone} to discuss your material before you visit.`,
+  },
+  {
+    q: 'Do you buy PCB and IC scrap in Vadodara?',
+    a: 'Yes. Circuit boards, plastic ICs, memory cards and other precious-metal-bearing electronics are our core materials. Share photos and quantity for a quote.',
+  },
+  {
+    q: 'Can businesses in Vadodara GIDC areas send material to you?',
+    a: 'Yes. We are in Manjusar, close to Savli, Halol and Vadodara’s other GIDC estates. Call us to plan the pickup or delivery of your lot.',
+  },
+  {
+    q: 'What happens to my e-waste after I hand it over?',
+    a: 'It is sorted into lots, thermally reduced with full emission control, and the metals are recovered by crushing, blending and solvent extraction.',
+  },
+];
+---
+
+<BaseLayout
+  title="E-Waste Recycling in Vadodara | Alchemy Recyclers, Manjusar"
+  description="Looking for e-waste recycling in Vadodara? Alchemy Recyclers in Manjusar, Savli recycles PCBs, ICs, computers, memory cards and e-scrap from Vadodara businesses and recovers precious metals."
+  keywords={['e-waste recycling Vadodara', 'e-waste collection Vadodara', 'e-waste recycler Baroda', 'PCB scrap Vadodara', 'e-waste Manjusar', 'e-waste Savli']}
+>
+  <PageHero
+    eyebrow="Vadodara · Baroda"
+    title="E-waste recycling in <em>Vadodara</em>"
+    lead="A local e-waste recycler and precious metal recovery plant at Manjusar, Savli, serving businesses, factories and institutions across Vadodara (Baroda)."
+    crumbs={[{ label: 'E-waste recycling Vadodara', href: '/e-waste-recycling-vadodara/' }]}
+    image={heroImg}
+  >
+    <div class="btn-row on-dark hero-btns">
+      <a class="btn btn-gold" href={SITE.phoneHref}><Icon name="phone" /> Call {SITE.phone}</a>
+      <a class="btn btn-ghost" href={SITE.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" /> WhatsApp</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="prose reveal">
+        <h2>A recycler right here in Vadodara district</h2>
+        <p>
+          Vadodara is one of Gujarat’s biggest industrial centres, with engineering, chemical, pharma and IT companies
+          spread across its GIDC estates. All of them produce e-waste: old computers, circuit boards, electronic
+          controls and rejected parts.
+        </p>
+        <p>
+          Alchemy Recyclers is based at <strong>Manjusar, Savli</strong>, in Vadodara district. Instead of sending your
+          e-waste far away, you can work with a local team that understands the value inside it. We focus on
+          <a href="/services/precious-metal-recovery/">recovering precious metals</a> such as gold, silver, palladium
+          and platinum from your scrap.
+        </p>
+        <p>
+          Our process uses thermal reduction with an afterburner above 1100 °C and a venturi wet scrubber, so exhaust is
+          cleaned before release.
+        </p>
+      </div>
+      <div class="img-frame reveal ratio">
+        <Image src={phones} alt="Old phones collected for e-waste recycling in Vadodara" widths={[500, 900]} sizes="(min-width: 900px) 50vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Who we work with</p>
+        <h2>E-waste solutions for Vadodara businesses</h2>
+      </div>
+      <div class="grid grid-4">
+        {
+          who.map((w) => (
+            <div class="card reveal">
+              <span class="w-icon">
+                <Icon name={w.icon} size={24} />
+              </span>
+              <h3>{w.title}</h3>
+              <p class="muted">{w.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div class="reveal">
+        <p class="eyebrow">Near you</p>
+        <h2>Areas around Vadodara</h2>
+        <p class="lead">Our plant is close to the main industrial estates of Vadodara district, including:</p>
+        <ul class="areas">
+          {areas.map((a) => <li><Icon name="pin" size={16} /> {a}</li>)}
+        </ul>
+      </div>
+      <div class="map reveal">
+        <iframe
+          src={SITE.mapEmbed}
+          title="Map of Alchemy Recyclers, Manjusar, Savli, Vadodara"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">What we accept</p>
+        <h2>E-waste we take from Vadodara</h2>
+      </div>
+      <div class="mat-list">
+        {MATERIALS.map((m) => <a class="chip big" href={`/materials/#${m.slug}`}>{m.name}</a>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split faq-split">
+      <div class="reveal">
+        <p class="eyebrow">FAQ</p>
+        <h2>E-waste in Vadodara: common questions</h2>
+      </div>
+      <FAQ items={faqs} />
+    </div>
+  </section>
+
+  <CTA title="Recycle your e-waste in Vadodara." />
+</BaseLayout>
+
+<style>
+  .hero-btns {
+    margin-top: 28px;
+  }
+  .ratio {
+    aspect-ratio: 4 / 3;
+  }
+  .muted {
+    color: var(--muted);
+    margin: 0;
+  }
+  .w-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--green-800);
+    color: var(--gold-400);
+    margin-bottom: 16px;
+  }
+  .areas {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 10px 20px;
+  }
+  .areas li {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .areas :global(svg) {
+    color: var(--gold-600);
+    flex: none;
+  }
+  .map {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    aspect-ratio: 4 / 3;
+  }
+  .map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .mat-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip.big {
+    font-size: 1rem;
+    padding: 0.6em 1.2em;
+  }
+  .faq-split {
+    align-items: start;
+  }
+</style>

@@ -1,0 +1,228 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+import heroImg from '../assets/img/pcb.webp';
+import goldImg from '../assets/img/hero-gold-cpus.png';
+
+const steps = [
+  {
+    icon: 'scale',
+    title: 'Identify the key raw material',
+    text: 'Every lot is checked to identify what it is and which precious metals it is likely to carry.',
+  },
+  {
+    icon: 'sort',
+    title: 'Sort and segregate into lots',
+    text: 'Items are separated into individual lots and treated in batches, following a careful waste recovery process.',
+  },
+  {
+    icon: 'flame',
+    title: 'Thermal reduction',
+    text: 'Organic material is thermally reduced to carbonaceous ash. This cuts the volume and concentrates the precious metal.',
+  },
+  {
+    icon: 'recycle',
+    title: 'Crush, classify and blend',
+    text: 'The ash, mainly carbon and mixed metals, is crushed, sized and blended into a uniform, “well characterised” commodity.',
+  },
+  {
+    icon: 'chip',
+    title: 'Solvent extraction',
+    text: 'Solvent extraction recovers metals from surface-plated items and from the concentrated material.',
+  },
+  {
+    icon: 'shield',
+    title: 'Recovered metal',
+    text: 'The result is marketable gold, silver, platinum, palladium, rhodium and copper, with minimal environmental impact.',
+  },
+] as const;
+
+const howTo = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How Alchemy Recyclers recovers precious metals from e-waste',
+  step: steps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.title, text: s.text })),
+};
+---
+
+<BaseLayout
+  title="Our E-Waste Recycling Process"
+  description="How Alchemy Recyclers recovers gold, silver, platinum and palladium from e-waste: thermal reduction, solvent extraction, a 1100 °C afterburner and venturi wet scrubber pollution control."
+  schema={[howTo]}
+>
+  <PageHero
+    eyebrow="How we recycle"
+    title="Green technology for <em>precious</em> metal recovery."
+    lead="Thermal reduction is the long-standing industry standard for recycling precious metals from organic-rich materials. It combines accurate measurement of precious metal content with efficient recovery."
+    crumbs={[{ label: 'Process', href: '/process/' }]}
+    image={heroImg}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Step by step</p>
+        <h2>From waste to recovered metal</h2>
+      </div>
+      <ol class="timeline">
+        {
+          steps.map((s, i) => (
+            <li class="reveal">
+              <span class="dot">
+                <Icon name={s.icon} size={24} />
+              </span>
+              <div class="card">
+                <span class="k">Step {i + 1}</span>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section bg-dark">
+    <div class="container split">
+      <div class="reveal">
+        <p class="eyebrow">Environmental leadership</p>
+        <h2>Pollution control built into every step.</h2>
+        <p class="lead">
+          The main concern when thermally reducing material is controlling off-gas emissions. Our multi-stage exhaust
+          scrubbing system cleans the exhaust and prevents hazardous by-products from forming.
+        </p>
+      </div>
+      <div class="controls reveal">
+        <div class="ctrl">
+          <span class="c-icon"><Icon name="flame" size={26} /></span>
+          <div>
+            <h3>Afterburner above 1100 °C</h3>
+            <p>Exhaust from the burn chamber is re-burned with excess air at over 1100 °C to fully combust emissions.</p>
+          </div>
+        </div>
+        <div class="ctrl">
+          <span class="c-icon"><Icon name="wind" size={26} /></span>
+          <div>
+            <h3>Variable-throat venturi scrubber</h3>
+            <p>A wet scrubbing system removes smoke particles with high efficiency. Water droplets trap the particles and separate them from the air stream.</p>
+          </div>
+        </div>
+        <div class="ctrl">
+          <span class="c-icon"><Icon name="leaf" size={26} /></span>
+          <div>
+            <h3>Efficient at low volumes</h3>
+            <p>Our thermal reduction and pollution control systems are engineered to run efficiently even at low volumes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split reverse">
+      <div class="reveal">
+        <p class="eyebrow">Two technologies</p>
+        <h2>The right method for each material</h2>
+        <h3>Solvent extraction</h3>
+        <p>For surface-plated items, such as gold-plated connectors, contacts and pins.</p>
+        <h3>Thermal reduction + solvent extraction</h3>
+        <p>
+          For embedded electronic parts like processors and integrated chips, and for organic-rich waste such as rags,
+          wipes and sweeps.
+        </p>
+        <p>
+          Our plant can process multiple metals, even from products with a low percentage of precious metals, while
+          controlling the emissions from today’s complex materials.
+        </p>
+      </div>
+      <div class="img-frame reveal ratio">
+        <Image src={goldImg} alt="Gold recovered from old computer processors" widths={[500, 900]} sizes="(min-width: 900px) 50vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</BaseLayout>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: grid;
+    gap: 22px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: linear-gradient(var(--gold-400), var(--green-500));
+  }
+  .timeline li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .dot {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--green-900);
+    color: var(--gold-400);
+    border: 3px solid var(--paper);
+    box-shadow: 0 0 0 2px var(--gold-400);
+  }
+  .timeline p {
+    color: var(--muted);
+    margin: 0;
+  }
+  .k {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-600);
+  }
+  .controls {
+    display: grid;
+    gap: 16px;
+  }
+  .ctrl {
+    display: flex;
+    gap: 18px;
+    padding: 24px;
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 4%);
+    border: 1px solid rgb(255 255 255 / 10%);
+  }
+  .ctrl p {
+    margin: 0;
+    color: #b9c9be;
+  }
+  .c-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--gold-grad);
+    color: var(--green-950);
+  }
+  .ratio {
+    aspect-ratio: 4 / 3;
+  }
+</style>

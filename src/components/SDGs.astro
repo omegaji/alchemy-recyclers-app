@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+const icons = import.meta.glob<{ default: ImageMetadata }>('../assets/sdg/*.png', { eager: true });
+
+const goals = [
+  [7, 'Affordable and Clean Energy'],
+  [8, 'Decent Work and Economic Growth'],
+  [9, 'Industry, Innovation and Infrastructure'],
+  [10, 'Reduced Inequalities'],
+  [11, 'Sustainable Cities and Communities'],
+  [12, 'Responsible Consumption and Production'],
+  [13, 'Climate Action'],
+  [14, 'Life Below Water'],
+  [15, 'Life on Land'],
+  [17, 'Partnerships for the Goals'],
+] as const;
+---
+
+<ul class="sdgs">
+  {
+    goals.map(([n, name], i) => (
+      <li class="reveal" style={`transition-delay:${i * 40}ms`}>
+        <Image src={icons[`../assets/sdg/sdg-${n}.png`].default} alt={`UN SDG ${n}: ${name}`} width={140} height={140} />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .sdgs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 104px), 1fr));
+    max-width: 960px;
+    margin-inline: auto;
+  }
+  @media (min-width: 900px) {
+    .sdgs {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+  li img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    transition: transform 0.25s;
+  }
+  li:hover img {
+    transform: scale(1.05) rotate(-2deg);
+  }
+</style>
