@@ -39,7 +39,7 @@ For precious metals, circularity is simple: **metal that is already above ground
 
 A large share of India’s e-waste is still handled informally. Workers often use open burning and acid baths, which damage health and the environment and recover only part of the metal.
 
-The answer is not to shut these workers out but to **connect informal collection with formal, controlled recycling**. This is a core belief of our directors at Alchemy Recyclers.
+The answer is not to shut these workers out but to **connect informal collection with formal, controlled recycling**. This is a core belief of our team at Alchemy Recyclers.
 
 ## How we contribute
 

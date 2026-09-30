@@ -7,19 +7,9 @@ import CTA from '../components/CTA.astro';
 import { SITE } from '../data/site';
 import hero from '../assets/img/hero-gold-cpus.png';
 import goldParts from '../assets/img/gold-plated-components.png';
-import alam from '../assets/img/alam-shah.png';
 import sagar from '../assets/img/sagar-upadhyay.png';
 
 const directors = [
-  {
-    name: 'Alam Shah',
-    role: 'Director',
-    photo: alam,
-    bio: [
-      'Mr Alam Shah has more than two decades of experience in metals and the scrap trade, and has been a Director of the company since its incorporation. He has strong links with formal and informal actors of the metal trade across India.',
-      'He strongly believes in ethical business practices and has vast experience in large scrap disposal, dismantling and demolition projects under liquidation or relocation, with complete client satisfaction. His consultative, collaborative way of working speeds up disposal to match each client’s needs, and he has completed many projects within cost and time.',
-    ],
-  },
   {
     name: 'Sagar Upadhyay',
     role: 'Director',
@@ -224,10 +214,9 @@ const personSchema = directors.map((d) => ({
     display: grid;
     gap: 24px;
   }
-  @media (min-width: 1000px) {
-    .directors {
-      grid-template-columns: 1fr 1fr;
-    }
+  .directors {
+    max-width: 820px;
+    margin-inline: auto;
   }
   .director {
     display: grid;
